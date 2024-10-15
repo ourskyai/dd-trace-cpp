@@ -34,10 +34,10 @@ endif ()
 
 # Linking this library requires threads.
 find_package(Threads REQUIRED)
+
 if (YOCTO_USE_SYSTEM_LIBS)
-  set(BUILD_SHARED_LIBS OFF)
   find_package(CURL REQUIRED)
-  add_library(CURL::libcurl_static ALIAS CURL::libcurl)
+  add_library(CURL::libcurl_shared ALIAS CURL::libcurl)
 else ()
   include(cmake/deps/curl.cmake)
 endif ()

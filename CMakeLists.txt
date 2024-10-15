@@ -148,9 +148,6 @@ target_link_libraries(dd_trace_cpp-objects
 
 # Produce both shared and static versions of the library.
 if (BUILD_SHARED_LIBS)
-  find_package(CURL REQUIRED)
-  add_library(CURL::libcurl_shared ALIAS CURL::libcurl)
-
   add_library(dd_trace_cpp-shared SHARED $<TARGET_OBJECTS:dd_trace_cpp-objects>)
   add_library(dd_trace::shared ALIAS dd_trace_cpp-shared)
 
@@ -194,9 +191,6 @@ if (BUILD_SHARED_LIBS)
 endif ()
 
 if (BUILD_STATIC_LIBS)
-  find_package(CURL REQUIRED)
-  add_library(CURL::libcurl_static ALIAS CURL::libcurl)
-
   add_library(dd_trace_cpp-static STATIC $<TARGET_OBJECTS:dd_trace_cpp-objects>)
   add_library(dd_trace::static ALIAS dd_trace_cpp-static)
 

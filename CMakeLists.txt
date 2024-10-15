@@ -13,6 +13,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_STATIC_LIBS "Build static libraries" ON)
+option(YOCTO_USE_SYSTEM_LIBS "Yocto build flag" OFF)
 
 set(DD_TRACE_TRANSPORT "curl" CACHE STRING "HTTP transport that dd-trace-cpp uses to communicate with the Datadog Agent, can be either 'none' or 'curl'")
 
@@ -33,7 +34,14 @@ endif ()
 
 # Linking this library requires threads.
 find_package(Threads REQUIRED)
-include(cmake/deps/curl.cmake)
+
+if (YOCTO_USE_SYSTEM_LIBS)
+  find_package(CURL REQUIRED)
+  add_library(CURL::libcurl_shared ALIAS CURL::libcurl)
+else ()
+  include(cmake/deps/curl.cmake)
+endif ()
+
 include(cmake/deps/json.cmake)
 include(cmake/utils.cmake)
 

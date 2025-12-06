@@ -1,6 +1,6 @@
 # Note: Make sure that this version is the same as that in
 # "./CheckRequiredCMakeVersion.cmake".
-cmake_minimum_required(VERSION 3.28...4.0)
+cmake_minimum_required(VERSION 3.22)
 cmake_policy(SET CMP0077 NEW)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -18,6 +18,7 @@ project(
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(BUILD_STATIC_LIBS "Build static libraries" ON)
+option(YOCTO_USE_SYSTEM_LIBS "Yocto build flag" OFF)
 
 if (WIN32)
   option(DD_TRACE_STATIC_CRT "Build dd-trace-cpp with static CRT with MSVC" OFF)
@@ -284,6 +285,12 @@ if (BUILD_SHARED_LIBS)
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
   )
+
+  # Install headers separately
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h"
+  )
 endif ()
 
 if (BUILD_STATIC_LIBS)
@@ -335,6 +342,12 @@ if (BUILD_STATIC_LIBS)
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  )
+
+  # Then, install the public headers separately
+  install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+    FILES_MATCHING PATTERN "*.h"
   )
 endif ()
 

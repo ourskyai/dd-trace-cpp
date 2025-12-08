@@ -3,7 +3,7 @@
 cmake_minimum_required(VERSION 3.22)
 cmake_policy(SET CMP0077 NEW)
 
-project(dd-trace-cpp)
+project(dd-trace-cpp VERSION 0.2.2)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -158,6 +158,11 @@ target_link_libraries(dd_trace_cpp-objects
 if (BUILD_SHARED_LIBS)
   add_library(dd_trace_cpp-shared SHARED $<TARGET_OBJECTS:dd_trace_cpp-objects>)
   add_library(dd_trace::shared ALIAS dd_trace_cpp-shared)
+
+  set_target_properties(dd_trace_cpp-shared PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION 0
+  )
 
   if (DD_TRACE_TRANSPORT STREQUAL "curl")
     add_dependencies(dd_trace_cpp-shared CURL::libcurl_shared)
